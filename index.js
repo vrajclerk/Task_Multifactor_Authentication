@@ -34,11 +34,14 @@
              res.redirect("/?suggest=User all ready exist");
           
           }else{
-            console.log("2..")
-          
+            const otp= otp1.otp_generate();
+            mail.send_mail(userEmail,otp);
   
-          const otp = Math.floor(100000 + Math.random() * 900000).toString();
-            
+              ob.otp = otp
+              ob.email = userEmail
+              ob.password = userPassword
+              console.log("3...")
+              res.render('verify_otp',{otp1:"otp send successfully ",email:userEmail,redirect:"/signup/dashboard"});
   
         }
       }
@@ -61,29 +64,8 @@
           {
             const otp = otp1.otp_generate();
             await User.findOneAndUpdate({ email }, { otp }, { upsert: true });
-            const transporter = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: 'tester31190@gmail.com', 
-                pass: 'ehjo azwp qojm uiuc', 
-              },
-            });
-          
-            const mailOptions = {
-              from: 'tester31190@gmail.com', 
-              to: email,
-              subject: 'OTP Verification',
-              text: `Your OTP is: ${otp}`,
-            };
-          
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                console.log(error)
-                return res.status(500).send("error occur");
-              }
-              res.status(200).render('verify_otp',{otp1:"otp send successfully ",email:email,redirect:"/login/dashboard"});
-            });
-  
+            mail.send_mail(email,otp);
+            
           }
           else{ 
             res.redirect("/?suggest=Invalid  password"); 
@@ -130,6 +112,9 @@
       password:ob.password,
     })
     user.save();
+    ob.otp=0;
+     ob.email="";
+   ob.password="";
     res.status(200).sendFile(path.join(__dirname+"/views/dashboard.html"));
   
    }
