@@ -1,29 +1,24 @@
-const ob = {
+ const express= require("express");
+  const nodemailer = require('nodemailer');
+  const path=require('path')
+  const bodyParser=require('body-parser')
+  const app=express();
+  const port=3000;
+  const User=require('./views/mongodb')
+
+  app.use(bodyParser.urlencoded({extended: false}));
+  app.use(express.json())
+  app.set("view engine","ejs")
+  
+  //email handling...
+  const ob = {
     otp : 0,
     email:"",
     password:""
   }
   
-  const express= require("express");
-  const nodemailer = require('nodemailer');
-  const path=require('path')
-  const bodyParser=require('body-parser')
-  //const jwt=require('jsonwebtoken');
-  const app=express();
-  const port=3000;
-  const User=require('./views/mongodb')
-  //const templatePath=path.join(__dirname,'../templates')
-  //const SECRET_KEY="NOTESAPI"
-  app.use(bodyParser.urlencoded({extended: false}));
-  app.use(express.json())
-  app.set("view engine","ejs")
-  //app.set("views",templatePath)
-  //email handling...
-  
-  
   app.get("/",(req,res)=>{
-    // res.sendFile(path.join(__dirname+"/templates/index.html"));
-  
+   
     let suggest1=req.query.suggest;
     res.render('index',{suggest:suggest1})
   })
@@ -36,10 +31,6 @@ const ob = {
           const existingUser= await User.findOne({email :userEmail})
           if(existingUser)
           {
-            
-            // res.render('index',{suggest:"User all ready exist"})
-            
-            // res.render('index.ejs',{suggest:"User all ready exist"})
              res.redirect("/?suggest=User all ready exist");
           
           }else{
@@ -72,19 +63,13 @@ const ob = {
               ob.password = userPassword
               res.status(200).render('verify_otp',{otp1:"otp send successfully ",email:userEmail,redirect:"/signup/verify_otp"});
               
-             // res.status(200).redirect(`/request_otp/?otp1:otp send successfully ,email:${email}`)
             });
-         // const token=jwt.sign({email :result.email,id:result._id},SECRET_KEY);
-        //  res.status(201).json({user:result,token:token})
-         //res.redirect("/request_otp")
-        
   
         }
       }
       catch(error)
       {
         console.log(error);
-       // res.status(404).json({user:result,token:token})
        res.status(404).send("<h1>Error occur</h1>")
       }  
   })
@@ -123,7 +108,6 @@ const ob = {
                 return res.status(500).send("error occur");
               }
               res.status(200).render('verify_otp',{otp1:"otp send successfully ",email:email,redirect:"/login/dashboard"});
-             // res.status(200).redirect(`/request_otp/?otp1:otp send successfully ,email:${email}`)
             });
   
   
@@ -161,8 +145,6 @@ const ob = {
      console.log("1.....")
       res.status(400).render('verify_otp',{otp1:"Invalid otp",email:email});
     }
-    // res.sendFile(path.join(__dirname+"/views/verify_otp.html"));
-   
    
    
   })
@@ -181,13 +163,10 @@ const ob = {
    }
    else{
     res.status(400).render('verify_otp',{otp1:"Invalid otp",email:email});
-   }
-  
+   }  
    
   })
-  
-  
-  
+   
   app.listen(port,()=>{
       console.log(`server listen on ${port} number `)
   })
