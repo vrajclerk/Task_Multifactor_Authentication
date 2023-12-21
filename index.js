@@ -50,13 +50,13 @@ const ob = {
             const transporter = nodemailer.createTransport({
               service: 'gmail',
               auth: {
-                user: 'hetdoshi2020@gmail.com', 
-                pass: 'dzat pneg qhvt ucrp', 
+                user: 'tester31190@gmail.com', 
+                pass: 'ehjo azwp qojm uiuc', 
               },
             });
           
             const mailOptions = {
-              from: 'hetdoshi2020@gmail.com', 
+              from: 'tester31190@gmail.com', 
               to: userEmail,
               subject: 'OTP Verification',
               text: `Your OTP is: ${otp}`,
@@ -105,13 +105,13 @@ const ob = {
             const transporter = nodemailer.createTransport({
               service: 'gmail',
               auth: {
-                user: 'hetdoshi2020@gmail.com', 
-                pass: 'dzat pneg qhvt ucrp', 
+                user: 'tester31190@gmail.com', 
+                pass: 'ehjo azwp qojm uiuc', 
               },
             });
           
             const mailOptions = {
-              from: 'hetdoshi2020@gmail.com', 
+              from: 'tester31190@gmail.com', 
               to: email,
               subject: 'OTP Verification',
               text: `Your OTP is: ${otp}`,
