@@ -4,7 +4,7 @@
  const bodyParser=require('body-parser')
  const app=express();
  const port=3000;
- const User=require('./views/mongodb')
+ const User=require('./mongodb')
  const otp1=require('./otp_generate')
  const mail=require('./send_mail')
 
@@ -17,15 +17,14 @@
    password:""
  }
  
- 
+   // Handle GET request to the root URL ("/")
  app.get("/",(req,res)=>{
-   // res.sendFile(path.join(__dirname+"/templates/index.html"));
    let suggest1=req.query.suggest;
    res.render('index',{suggest:suggest1})
  })
- 
+
+  // Handle POST request to "/sign-up" for user registration/signup
  app.post("/sign-up", async (req,res)=>{
-    
      const userEmail=req.body.email;
      const userPassword=req.body.password;
      try{
@@ -52,10 +51,11 @@
       res.status(404).send("<h1>Error occur</h1>")
      }  
  })
+  // Handle POST request to "/login" for user login
  app.post("/login",async (req,res)=>{
    const email=req.body.email;
      const userPassword=req.body.password;
-     //console.log(userPassword , email);
+     
      try{
        const validemail= await User.findOne({email :email})
        if(validemail)
@@ -82,10 +82,9 @@
    
  })
  
- 
+ // Handle POST request to "/login/dashboard" after entering OTP for login
  app.post('/login/dashboard',async(req,res)=>{
    let otp=req.body.otp;
- 
    let email=req.body.email;
    
    const user = await User.findOne({ email, otp });
@@ -124,7 +123,7 @@
  })
  
  
- 
+ //starts the Express server, listening on port 3000.
  app.listen(port,()=>{
      console.log(`server listen on ${port} number `)
  })
