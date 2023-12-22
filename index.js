@@ -35,7 +35,7 @@
  
          }else{
            const otp= otp1.otp_generate();
-           mail.send_mails(userEmail,otp);
+           mail.send_mail(userEmail,otp);
  
              ob.otp = otp
              ob.email = userEmail
